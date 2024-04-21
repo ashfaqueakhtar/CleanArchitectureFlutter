@@ -23,12 +23,12 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 ## **Project required plugins**
-`get: ^4.6.6'
-'get_storage: ^2.1.1'
-'dio: ^5.1.2'
-'flutter_dotenv: ^5.0.1'
-'fluttertoast: ^8.2.2'
-'flutter_svg: ^2.0.7`
+get: ^4.6.6
+get_storage: ^2.1.1
+dio: ^5.1.2
+flutter_dotenv: ^5.0.1
+fluttertoast: ^8.2.2
+flutter_svg: ^2.0.7
 
 It's a minimalistic project with API call, Please don't expect an amazing UI rather expect something
 related to code structure understanding below.
