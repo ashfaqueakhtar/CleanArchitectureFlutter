@@ -15,7 +15,7 @@ Lets summarise as below
     1. Pages or Screen
     2. Widgets
 
-Repositories acts as a bridge between Data and Domain
+Repositories acts as a bridge between Data and Domain. 
 UseCase has all logic that presentation layer observes or give action to
 
 For help getting started with Flutter development, view the
@@ -54,7 +54,7 @@ where "data" has the main consumable data for all pages
 * For **naming convention** use following
 
 **File Name:** use Lower Snake case like file_utils.dart, home_screen.dart
-**Class Name:** use Upper Camel case like FileUtils{}, HomeScreen{}
+**Class Name:** use Pascal case like FileUtils{}, HomeScreen{}
 **Function Name:** use Lower Camel case like remove(), addPath()
 **Variable Name** use Lower Camel case like isBoolean, urlPath
 
