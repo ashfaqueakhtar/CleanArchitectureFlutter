@@ -27,7 +27,9 @@ class LoginController extends GetxController {
   get getUserNameError => _usernameError.value;
 
   get getPasswordError => _passwordError.value;
+
   get usernameController => _usernameController;
+
   get passwordController => _passwordController;
 
   LoginData get getLoginData => _loginData;
@@ -58,31 +60,31 @@ class LoginController extends GetxController {
     }
   }
 
-  void _callLoginApi() {
-    /// Request Data
+  Future<void> _callLoginApi() async {
+    /// Request Data Example
     Map<String, dynamic> data1 = {
       NetworkConstants.paramEmail: getLoginData.getUserName,
       NetworkConstants.paramPassword: getLoginData.getPassword,
     };
     //////
+
     var data2 = LoginRequest(
       email: getLoginData.getUserName,
       password: getLoginData.getPassword,
     ).toJson();
 
-    //any of data1 or data2 can be used
     _status.value = STATUS.LOADING;
-    _authRepo.postLogin(requestData: data2).then((value) {
+    try {
+      var data = await _authRepo.postLogin(requestData: data2);
       _status.value = STATUS.SUCCESS;
-      LoginResponse? response = value;
+      LoginResponse? response = data;
       if (response != null) {
         _authRepo.setToken(response.token ?? "");
-        _moveToHome();
+        _moveToHome(); // Comment navigation for testing purpose
       }
-    }).onError((error, stackTrace) {
+    } catch (e) {
       _status.value = STATUS.ERROR;
-    });
-    //////
+    }
   }
 
   _moveToHome() {
