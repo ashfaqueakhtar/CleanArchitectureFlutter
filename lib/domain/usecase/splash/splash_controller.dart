@@ -27,7 +27,7 @@ class SplashController extends GetxController{
 
   void _setTimerNavigation() {
     _timer = Timer(const Duration(seconds: 3), () async {
-        String? token = await _repo.getToken();
+        String token = await _repo.getToken();
         debugPrint("token : $token");
         if(token.isEmpty){
           _moveToLoginPage();

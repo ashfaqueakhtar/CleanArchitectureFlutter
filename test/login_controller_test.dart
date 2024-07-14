@@ -40,81 +40,85 @@ void main() {
     Get.reset();
   });
 
-  test("onSubmit set usernameError when username is empty ", () {
-    sut.getLoginData.setUsername("");
-    sut.getLoginData.setPassword("password");
 
-    // call the method
-    sut.onSubmit();
+  group("LoginController : onSubmit", (){
 
-    expect(sut.getUserNameError, "Username is Empty");
-  });
+    test("onSubmit set usernameError when username is empty ", () {
+      sut.getLoginData.setUsername("");
+      sut.getLoginData.setPassword("password");
 
-  test("onSubmit set passwordError when password is empty ", () {
-    sut.getLoginData.setUsername("username");
-    sut.getLoginData.setPassword("");
+      // call the method
+      sut.onSubmit();
 
-    // do the action
-    sut.onSubmit();
-
-    // write expected result comparison
-    expect(sut.getPasswordError, 'Password is Empty');
-  });
-
-  test('onSubmit calls _callLoginApi when both fields are filled', () {
-    sut.getLoginData.setUsername("username");
-    sut.getLoginData.setPassword("password");
-
-    //fake Call of API with successful response LoginResponse
-    //This is needed as we are mocking it
-    when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).thenAnswer((_) async {
-      return LoginResponse(token: "token");
+      expect(sut.getUserNameError, "Username is Empty");
     });
 
-    // do the action
-    sut.onSubmit();
+    test("onSubmit set passwordError when password is empty ", () {
+      sut.getLoginData.setUsername("username");
+      sut.getLoginData.setPassword("");
 
-    // Assert =>
-    //verify => that checks if a specific method call happened on the mock object.
-    //.called(1); -> 1 denotes that it should be called once
-    verify(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).called(1);
-    expect(sut.getStatus, STATUS.LOADING);
-  });
+      // do the action
+      sut.onSubmit();
 
-  test('onSubmit called and status sets to SUCCESS when login is successful', () async {
-    sut.getLoginData.setUsername("username");
-    sut.getLoginData.setPassword("password");
-
-    //fake Call of API with successful response of LoginResponse
-    //This is needed as we are mocking it
-    when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).thenAnswer((_) async {
-      return LoginResponse(token: "token");
+      // write expected result comparison
+      expect(sut.getPasswordError, 'Password is Empty');
     });
 
-    // do the action
-    sut.onSubmit();
-    ///It is needed to check asynchronous call is happening or not
-    ///as we are using await so we are using until called
-    await untilCalled(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')));
+    test('onSubmit calls _callLoginApi when both fields are filled', () {
+      sut.getLoginData.setUsername("username");
+      sut.getLoginData.setPassword("password");
 
-    // Assert
-    expect(sut.getStatus, STATUS.SUCCESS);
-  });
+      //fake Call of API with successful response LoginResponse
+      //This is needed as we are mocking it
+      when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).thenAnswer((_) async {
+        return LoginResponse(token: "token");
+      });
 
-  test('onSubmit sets status to ERROR when login fails', () async {
-    // Arrange
-    sut.getLoginData.setUsername("username");
-    sut.getLoginData.setPassword("password");
+      // do the action
+      sut.onSubmit();
 
-    when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')))
-        .thenThrow(Exception('Fake Login failed'));
+      // Assert =>
+      //verify => that checks if a specific method call happened on the mock object.
+      //.called(1); -> 1 denotes that it should be called once
+      verify(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).called(1);
+      expect(sut.getStatus, STATUS.LOADING);
+    });
 
-    // Act
-    sut.onSubmit();
-    await untilCalled(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')));
+    test('onSubmit called and status sets to SUCCESS when login is successful', () async {
+      sut.getLoginData.setUsername("username");
+      sut.getLoginData.setPassword("password");
 
-    // Assert
-    expect(sut.getStatus, STATUS.ERROR);
+      //fake Call of API with successful response of LoginResponse
+      //This is needed as we are mocking it
+      when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData'))).thenAnswer((_) async {
+        return LoginResponse(token: "token");
+      });
+
+      // do the action
+      sut.onSubmit();
+      ///It is needed to check asynchronous call is happening or not
+      ///as we are using await so we are using until called
+      await untilCalled(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')));
+
+      // Assert
+      expect(sut.getStatus, STATUS.SUCCESS);
+    });
+
+    test('onSubmit sets status to ERROR when login fails', () async {
+      // Arrange
+      sut.getLoginData.setUsername("username");
+      sut.getLoginData.setPassword("password");
+
+      when(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')))
+          .thenThrow(Exception('Fake Login failed'));
+
+      // Act
+      sut.onSubmit();
+      await untilCalled(() => mockAuthRepo.postLogin(requestData: any(named: 'requestData')));
+
+      // Assert
+      expect(sut.getStatus, STATUS.ERROR);
+    });
   });
 
   ///comment navigation to acheive test cases
