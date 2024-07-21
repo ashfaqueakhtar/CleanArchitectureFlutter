@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                   controller: controller.passwordController,
                   errorText: controller.getPasswordError,
                   onChange: (value) {
-                    controller.getLoginData.setUsername(value);
+                    controller.getLoginData.setPassword(value);
                   },
                 ),
               ),
