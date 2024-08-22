@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:getx_clean_arch/config/config.dart';
 import 'package:getx_clean_arch/data/datasources/appLocalData/app_local_data_impl.dart';
+import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 import 'api_exception.dart';
 import 'api_service.dart';
 import 'resource.dart';
@@ -15,12 +19,66 @@ class ApiServiceImpl extends ApiService {
     receiveTimeout: const Duration(seconds: 90),
   );
 
-  // dio instance
+
+  ////////////////////////
+  /*Without SSL Pinning*/
+  ////////////////////////
   final Dio _dio = Dio(_options)
     ..interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
       return handler.next(options);
     }))
     ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+
+  ////////////////////////
+  /*SSL Pinning*/
+  ////////////////////////
+  /*final Dio _dio;
+  // Constructor
+  ApiServiceImpl() : _dio = Dio(_options) {
+    _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+      return handler.next(options);
+    }));
+    _dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    setupDioClient();
+  }
+
+  Future<String> computeCertificateFingerprint(String certificatePath) async {
+    try {
+      // Load the certificate from assets
+      final ByteData certificateData = await rootBundle.load(certificatePath);
+      final List<int> certificateBytes = certificateData.buffer.asUint8List();
+
+      // Compute SHA-256 hash
+      final Digest sha256Hash = sha256.convert(certificateBytes);
+
+      // Convert the hash to a hex string
+      final String fingerprint = sha256Hash.toString().toUpperCase();
+
+      return fingerprint;
+    } catch (e) {
+      debugPrint("SSL Pinning: Error computing certificate fingerprint: $e");
+      return "";
+    }
+  }
+
+  void setupDioClient() async {
+    final String fingerprint = await computeCertificateFingerprint('assets/cert/reqres2.pem');
+
+    if (fingerprint.isNotEmpty) {
+      _dio.interceptors.add(
+        CertificatePinningInterceptor(
+          allowedSHAFingerprints: [fingerprint],
+          timeout: 2000,
+        ),
+      );
+    } else {
+      debugPrint("SSL Pinning: not applied due to fingerprint error.");
+    }
+  }*/
+
+  ////////////////////////
+  /*SSL Pinning*/
+  ////////////////////////
 
   @override
   Future<Resource> postRequest({
