@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:get/get.dart';
 import 'package:getx_clean_arch/config/network/network_constants.dart';
 import 'package:getx_clean_arch/config/network/status.dart';
@@ -19,6 +21,45 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     _callHomeApi();
+    //_callHomeApiWithIsolate();
+  }
+
+  void computeInIsolate(SendPort sendPort) async {
+    ////// Request Data
+    Map<String, dynamic> data = {
+      NetworkConstants.paramPage: "1",
+    };
+    //////
+    sendPort.send(await _repo.getAllUsers(requestData: data));
+  }
+
+  void _callHomeApiWithIsolate() async {
+    final receivePort = ReceivePort();
+    ////// Request Data
+    Map<String, dynamic> data = {
+      NetworkConstants.paramPage: "1",
+    };
+    //////
+
+    await Isolate.spawn((List<dynamic> args) async {
+      SendPort sendPort = args[0];
+      UserRepo r = args[1];
+      Map<String, dynamic> d = args[2];
+
+
+      sendPort.send(await r.getAllUsers(requestData: d));
+    }, [receivePort.sendPort, _repo, data] /*receivePort.sendPort*/);
+
+    receivePort.listen((value) {
+      _status.value = STATUS.SUCCESS;
+      AllUserResponse? response = value;
+      if (response != null) {
+        var listUser = response.data ?? [];
+        _userList.value = listUser;
+      }
+    }).onError((er, stackTrace) {
+      _status.value = STATUS.ERROR;
+    });
   }
 
   void _callHomeApi() {
