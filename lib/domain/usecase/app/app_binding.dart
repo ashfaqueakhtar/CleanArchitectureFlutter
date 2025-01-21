@@ -14,7 +14,7 @@ class AppBinding extends Bindings {
     //1.Using permanent: true for a widget in Flutter ensures that the widget remains static and is not rebuilt,
     //even if its dependencies change
     //By avoiding rebuilt by permanent true it improves the performance of the app.
-    //USE_CASE: Use it when you have a class invoked severaal times through out the app
+    //USE_CASE: Use it when you have a class invoked several times through out the app
     //used with Get.put
     //2.Using fenix: true in Flutter enables the incremental compilation feature for a specific widget.
     //Helps faster reload with data.
