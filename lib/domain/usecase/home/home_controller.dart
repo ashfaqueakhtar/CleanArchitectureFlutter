@@ -68,6 +68,7 @@ class HomeController extends GetxController {
       NetworkConstants.paramPage: "1",
     };
     //////
+    //////
 
     ////// Any of data1 or data2 can be used
     _status.value = STATUS.LOADING;
