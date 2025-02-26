@@ -32,7 +32,6 @@ dependencies:
   get_storage: ^2.1.1
   dio: ^5.1.2
   flutter_dotenv: ^5.0.1
-  fluttertoast: 8.2.12
   flutter_svg: ^2.0.7
   mocktail: ^1.0.4
   http_certificate_pinning: 2.0.7

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:getx_clean_arch/app_colors.dart';
 import 'package:getx_clean_arch/res/app_font_size.dart';
 
@@ -33,12 +33,12 @@ class CommonUtils {
     ));
   }
 
-  static toastMessage(String message) {
+  /*static toastMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
       backgroundColor: Colors.black,
       textColor: Colors.white,
       toastLength: Toast.LENGTH_LONG,
     );
-  }
+  }*/
 }
